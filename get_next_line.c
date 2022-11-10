@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 18:21:18 by belkarto          #+#    #+#             */
-/*   Updated: 2022/11/09 15:58:11 by belkarto         ###   ########.fr       */
+/*   Updated: 2022/11/10 17:39:58 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,9 @@ char	*get_next_line(int fd)
 	static char	*line = NULL;
 	int			readed;
 	char		*tmp;
-	char		*holder;
 
 	readed = 1;
-	if (BUFFER_SIZE <= 0 || fd < 0)
+	if (BUFFER_SIZE <= 0 || fd < 0 || BUFFER_SIZE >= 2147483648)
 		return (NULL);
 	while (1)
 	{
@@ -84,21 +83,12 @@ char	*get_next_line(int fd)
 		readed = read(fd, str, BUFFER_SIZE);
 		if (readed == -1 || readed == 0)
 		{
-			if (readed == 0)
-			{
-				holder = ft_strdup(line);
-				free (line);
-				line = NULL;
-				return (holder);
-			}
-			free (line);
+			tmp = ft_strdup(line);
 			line = NULL;
-			return (NULL);
+			return (tmp);
 		}
 		str[readed] = '\0';
-		holder = line;
 		line = ft_strjoin(line, str);
-		free(holder);
 	}
 	tmp = ft_line(line);
 	line = ft_rest(line);

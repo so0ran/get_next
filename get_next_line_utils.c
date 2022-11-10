@@ -6,9 +6,10 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 20:24:49 by belkarto          #+#    #+#             */
-/*   Updated: 2022/11/09 16:28:11 by belkarto         ###   ########.fr       */
+/*   Updated: 2022/11/10 18:04:30 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "get_next_line.h"
 
 size_t	ft_strlen(const char *s)
@@ -23,41 +24,26 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strdup(char *s1)
 {
-	int	i;
-	int	len;
+	char	*str;
+	size_t	i;
+	size_t	len;
 
 	i = 0;
-	len = ft_strlen(s);
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1);
+	str = (char *) malloc(len * sizeof(char) + 1);
+	if (!str)
+		return (0);
 	while (i <= len)
 	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
+		str[i] = s1[i];
 		i++;
 	}
-	return (NULL);
-}
-
-char    *ft_strdup(const char *s1)
-{
-        char    *str;
-        size_t  i;
-		size_t	len;
-
-        i = 0;
-		if (!s1)
-			return (NULL);
-		len = ft_strlen(s1);
-        str = (char *) malloc(ft_strlen(s1) * sizeof(char) + 1);
-        if (!str)
-                return (0);
-        while (i <= len)
-        {
-                str[i] = s1[i];
-                i++;
-        }
-		return (str);
+	free(s1);
+	return (str);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -87,7 +73,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char const *s2)
 {
 	char	*str;
 	size_t	len_s1;
@@ -102,6 +88,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	i = -1;
 	while (s1 && s1[++i] != '\0')
 		str[i] = s1[i];
+	free(s1);
 	i = -1;
 	while (s2 && s2[++i] != '\0')
 		str[i + len_s1] = s2[i];
